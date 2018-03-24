@@ -12,6 +12,12 @@ type Post implements Node {
   author(where: UserWhereInput): User!
 }
 
+type Price implements Node {
+  id: ID!
+  count: Int!
+  amount: Int!
+}
+
 type User implements Node {
   id: ID!
   email: String!
@@ -24,23 +30,20 @@ type AggregatePost {
   count: Int!
 }
 
+type AggregatePrice {
+  count: Int!
+}
+
 type AggregateUser {
   count: Int!
 }
 
 type BatchPayload {
-  """
-  The number of nodes that have been affected by the Batch operation.
-  """
   count: Long!
 }
 
 scalar DateTime
 
-"""
-The 'Long' scalar type represents non-fractional signed whole numeric values.
-Long can represent values between -(2^63) and 2^63 - 1.
-"""
 scalar Long
 
 enum MutationType {
@@ -49,49 +52,19 @@ enum MutationType {
   DELETED
 }
 
-"""
-An object with an ID
-"""
 interface Node {
-  """
-  The id of the object.
-  """
   id: ID!
 }
 
-"""
-Information about pagination in a connection.
-"""
 type PageInfo {
-  """
-  When paginating forwards, are there more items?
-  """
   hasNextPage: Boolean!
-  """
-  When paginating backwards, are there more items?
-  """
   hasPreviousPage: Boolean!
-  """
-  When paginating backwards, the cursor to continue.
-  """
   startCursor: String
-  """
-  When paginating forwards, the cursor to continue.
-  """
   endCursor: String
 }
 
-"""
-A connection to a list of items.
-"""
 type PostConnection {
-  """
-  Information to aid in pagination.
-  """
   pageInfo: PageInfo!
-  """
-  A list of edges.
-  """
   edges: [PostEdge]!
   aggregate: AggregatePost!
 }
@@ -114,17 +87,8 @@ input PostCreateWithoutAuthorInput {
   text: String!
 }
 
-"""
-An edge in a connection.
-"""
 type PostEdge {
-  """
-  The item at the end of the edge.
-  """
   node: Post!
-  """
-  A cursor for use in pagination.
-  """
   cursor: String!
 }
 
@@ -160,29 +124,11 @@ type PostSubscriptionPayload {
 }
 
 input PostSubscriptionWhereInput {
-  """
-  Logical AND on all given filters.
-  """
   AND: [PostSubscriptionWhereInput!]
-  """
-  Logical OR on all given filters.
-  """
   OR: [PostSubscriptionWhereInput!]
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
   mutation_in: [MutationType!]
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
   updatedFields_contains: String
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
   updatedFields_contains_every: [String!]
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
   updatedFields_contains_some: [String!]
   node: PostWhereInput
 }
@@ -221,235 +167,67 @@ input PostUpsertWithoutAuthorInput {
 }
 
 input PostWhereInput {
-  """
-  Logical AND on all given filters.
-  """
   AND: [PostWhereInput!]
-  """
-  Logical OR on all given filters.
-  """
   OR: [PostWhereInput!]
   id: ID
-  """
-  All values that are not equal to given value.
-  """
   id_not: ID
-  """
-  All values that are contained in given list.
-  """
   id_in: [ID!]
-  """
-  All values that are not contained in given list.
-  """
   id_not_in: [ID!]
-  """
-  All values less than the given value.
-  """
   id_lt: ID
-  """
-  All values less than or equal the given value.
-  """
   id_lte: ID
-  """
-  All values greater than the given value.
-  """
   id_gt: ID
-  """
-  All values greater than or equal the given value.
-  """
   id_gte: ID
-  """
-  All values containing the given string.
-  """
   id_contains: ID
-  """
-  All values not containing the given string.
-  """
   id_not_contains: ID
-  """
-  All values starting with the given string.
-  """
   id_starts_with: ID
-  """
-  All values not starting with the given string.
-  """
   id_not_starts_with: ID
-  """
-  All values ending with the given string.
-  """
   id_ends_with: ID
-  """
-  All values not ending with the given string.
-  """
   id_not_ends_with: ID
   createdAt: DateTime
-  """
-  All values that are not equal to given value.
-  """
   createdAt_not: DateTime
-  """
-  All values that are contained in given list.
-  """
   createdAt_in: [DateTime!]
-  """
-  All values that are not contained in given list.
-  """
   createdAt_not_in: [DateTime!]
-  """
-  All values less than the given value.
-  """
   createdAt_lt: DateTime
-  """
-  All values less than or equal the given value.
-  """
   createdAt_lte: DateTime
-  """
-  All values greater than the given value.
-  """
   createdAt_gt: DateTime
-  """
-  All values greater than or equal the given value.
-  """
   createdAt_gte: DateTime
   updatedAt: DateTime
-  """
-  All values that are not equal to given value.
-  """
   updatedAt_not: DateTime
-  """
-  All values that are contained in given list.
-  """
   updatedAt_in: [DateTime!]
-  """
-  All values that are not contained in given list.
-  """
   updatedAt_not_in: [DateTime!]
-  """
-  All values less than the given value.
-  """
   updatedAt_lt: DateTime
-  """
-  All values less than or equal the given value.
-  """
   updatedAt_lte: DateTime
-  """
-  All values greater than the given value.
-  """
   updatedAt_gt: DateTime
-  """
-  All values greater than or equal the given value.
-  """
   updatedAt_gte: DateTime
   isPublished: Boolean
-  """
-  All values that are not equal to given value.
-  """
   isPublished_not: Boolean
   title: String
-  """
-  All values that are not equal to given value.
-  """
   title_not: String
-  """
-  All values that are contained in given list.
-  """
   title_in: [String!]
-  """
-  All values that are not contained in given list.
-  """
   title_not_in: [String!]
-  """
-  All values less than the given value.
-  """
   title_lt: String
-  """
-  All values less than or equal the given value.
-  """
   title_lte: String
-  """
-  All values greater than the given value.
-  """
   title_gt: String
-  """
-  All values greater than or equal the given value.
-  """
   title_gte: String
-  """
-  All values containing the given string.
-  """
   title_contains: String
-  """
-  All values not containing the given string.
-  """
   title_not_contains: String
-  """
-  All values starting with the given string.
-  """
   title_starts_with: String
-  """
-  All values not starting with the given string.
-  """
   title_not_starts_with: String
-  """
-  All values ending with the given string.
-  """
   title_ends_with: String
-  """
-  All values not ending with the given string.
-  """
   title_not_ends_with: String
   text: String
-  """
-  All values that are not equal to given value.
-  """
   text_not: String
-  """
-  All values that are contained in given list.
-  """
   text_in: [String!]
-  """
-  All values that are not contained in given list.
-  """
   text_not_in: [String!]
-  """
-  All values less than the given value.
-  """
   text_lt: String
-  """
-  All values less than or equal the given value.
-  """
   text_lte: String
-  """
-  All values greater than the given value.
-  """
   text_gt: String
-  """
-  All values greater than or equal the given value.
-  """
   text_gte: String
-  """
-  All values containing the given string.
-  """
   text_contains: String
-  """
-  All values not containing the given string.
-  """
   text_not_contains: String
-  """
-  All values starting with the given string.
-  """
   text_starts_with: String
-  """
-  All values not starting with the given string.
-  """
   text_not_starts_with: String
-  """
-  All values ending with the given string.
-  """
   text_ends_with: String
-  """
-  All values not ending with the given string.
-  """
   text_not_ends_with: String
   author: UserWhereInput
 }
@@ -458,17 +236,104 @@ input PostWhereUniqueInput {
   id: ID
 }
 
-"""
-A connection to a list of items.
-"""
-type UserConnection {
-  """
-  Information to aid in pagination.
-  """
+type PriceConnection {
   pageInfo: PageInfo!
-  """
-  A list of edges.
-  """
+  edges: [PriceEdge]!
+  aggregate: AggregatePrice!
+}
+
+input PriceCreateInput {
+  count: Int!
+  amount: Int!
+}
+
+type PriceEdge {
+  node: Price!
+  cursor: String!
+}
+
+enum PriceOrderByInput {
+  id_ASC
+  id_DESC
+  count_ASC
+  count_DESC
+  amount_ASC
+  amount_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type PricePreviousValues {
+  id: ID!
+  count: Int!
+  amount: Int!
+}
+
+type PriceSubscriptionPayload {
+  mutation: MutationType!
+  node: Price
+  updatedFields: [String!]
+  previousValues: PricePreviousValues
+}
+
+input PriceSubscriptionWhereInput {
+  AND: [PriceSubscriptionWhereInput!]
+  OR: [PriceSubscriptionWhereInput!]
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: PriceWhereInput
+}
+
+input PriceUpdateInput {
+  count: Int
+  amount: Int
+}
+
+input PriceWhereInput {
+  AND: [PriceWhereInput!]
+  OR: [PriceWhereInput!]
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  count: Int
+  count_not: Int
+  count_in: [Int!]
+  count_not_in: [Int!]
+  count_lt: Int
+  count_lte: Int
+  count_gt: Int
+  count_gte: Int
+  amount: Int
+  amount_not: Int
+  amount_in: [Int!]
+  amount_not_in: [Int!]
+  amount_lt: Int
+  amount_lte: Int
+  amount_gt: Int
+  amount_gte: Int
+}
+
+input PriceWhereUniqueInput {
+  id: ID
+}
+
+type UserConnection {
+  pageInfo: PageInfo!
   edges: [UserEdge]!
   aggregate: AggregateUser!
 }
@@ -491,17 +356,8 @@ input UserCreateWithoutPostsInput {
   name: String!
 }
 
-"""
-An edge in a connection.
-"""
 type UserEdge {
-  """
-  The item at the end of the edge.
-  """
   node: User!
-  """
-  A cursor for use in pagination.
-  """
   cursor: String!
 }
 
@@ -535,29 +391,11 @@ type UserSubscriptionPayload {
 }
 
 input UserSubscriptionWhereInput {
-  """
-  Logical AND on all given filters.
-  """
   AND: [UserSubscriptionWhereInput!]
-  """
-  Logical OR on all given filters.
-  """
   OR: [UserSubscriptionWhereInput!]
-  """
-  The subscription event gets dispatched when it's listed in mutation_in
-  """
   mutation_in: [MutationType!]
-  """
-  The subscription event gets only dispatched when one of the updated fields names is included in this list
-  """
   updatedFields_contains: String
-  """
-  The subscription event gets only dispatched when all of the field names included in this list have been updated
-  """
   updatedFields_contains_every: [String!]
-  """
-  The subscription event gets only dispatched when some of the field names included in this list have been updated
-  """
   updatedFields_contains_some: [String!]
   node: UserWhereInput
 }
@@ -596,225 +434,63 @@ input UserUpsertWithoutPostsInput {
 }
 
 input UserWhereInput {
-  """
-  Logical AND on all given filters.
-  """
   AND: [UserWhereInput!]
-  """
-  Logical OR on all given filters.
-  """
   OR: [UserWhereInput!]
   id: ID
-  """
-  All values that are not equal to given value.
-  """
   id_not: ID
-  """
-  All values that are contained in given list.
-  """
   id_in: [ID!]
-  """
-  All values that are not contained in given list.
-  """
   id_not_in: [ID!]
-  """
-  All values less than the given value.
-  """
   id_lt: ID
-  """
-  All values less than or equal the given value.
-  """
   id_lte: ID
-  """
-  All values greater than the given value.
-  """
   id_gt: ID
-  """
-  All values greater than or equal the given value.
-  """
   id_gte: ID
-  """
-  All values containing the given string.
-  """
   id_contains: ID
-  """
-  All values not containing the given string.
-  """
   id_not_contains: ID
-  """
-  All values starting with the given string.
-  """
   id_starts_with: ID
-  """
-  All values not starting with the given string.
-  """
   id_not_starts_with: ID
-  """
-  All values ending with the given string.
-  """
   id_ends_with: ID
-  """
-  All values not ending with the given string.
-  """
   id_not_ends_with: ID
   email: String
-  """
-  All values that are not equal to given value.
-  """
   email_not: String
-  """
-  All values that are contained in given list.
-  """
   email_in: [String!]
-  """
-  All values that are not contained in given list.
-  """
   email_not_in: [String!]
-  """
-  All values less than the given value.
-  """
   email_lt: String
-  """
-  All values less than or equal the given value.
-  """
   email_lte: String
-  """
-  All values greater than the given value.
-  """
   email_gt: String
-  """
-  All values greater than or equal the given value.
-  """
   email_gte: String
-  """
-  All values containing the given string.
-  """
   email_contains: String
-  """
-  All values not containing the given string.
-  """
   email_not_contains: String
-  """
-  All values starting with the given string.
-  """
   email_starts_with: String
-  """
-  All values not starting with the given string.
-  """
   email_not_starts_with: String
-  """
-  All values ending with the given string.
-  """
   email_ends_with: String
-  """
-  All values not ending with the given string.
-  """
   email_not_ends_with: String
   password: String
-  """
-  All values that are not equal to given value.
-  """
   password_not: String
-  """
-  All values that are contained in given list.
-  """
   password_in: [String!]
-  """
-  All values that are not contained in given list.
-  """
   password_not_in: [String!]
-  """
-  All values less than the given value.
-  """
   password_lt: String
-  """
-  All values less than or equal the given value.
-  """
   password_lte: String
-  """
-  All values greater than the given value.
-  """
   password_gt: String
-  """
-  All values greater than or equal the given value.
-  """
   password_gte: String
-  """
-  All values containing the given string.
-  """
   password_contains: String
-  """
-  All values not containing the given string.
-  """
   password_not_contains: String
-  """
-  All values starting with the given string.
-  """
   password_starts_with: String
-  """
-  All values not starting with the given string.
-  """
   password_not_starts_with: String
-  """
-  All values ending with the given string.
-  """
   password_ends_with: String
-  """
-  All values not ending with the given string.
-  """
   password_not_ends_with: String
   name: String
-  """
-  All values that are not equal to given value.
-  """
   name_not: String
-  """
-  All values that are contained in given list.
-  """
   name_in: [String!]
-  """
-  All values that are not contained in given list.
-  """
   name_not_in: [String!]
-  """
-  All values less than the given value.
-  """
   name_lt: String
-  """
-  All values less than or equal the given value.
-  """
   name_lte: String
-  """
-  All values greater than the given value.
-  """
   name_gt: String
-  """
-  All values greater than or equal the given value.
-  """
   name_gte: String
-  """
-  All values containing the given string.
-  """
   name_contains: String
-  """
-  All values not containing the given string.
-  """
   name_not_contains: String
-  """
-  All values starting with the given string.
-  """
   name_starts_with: String
-  """
-  All values not starting with the given string.
-  """
   name_not_starts_with: String
-  """
-  All values ending with the given string.
-  """
   name_ends_with: String
-  """
-  All values not ending with the given string.
-  """
   name_not_ends_with: String
   posts_every: PostWhereInput
   posts_some: PostWhereInput
@@ -829,37 +505,41 @@ input UserWhereUniqueInput {
 type Mutation {
   createPost(data: PostCreateInput!): Post!
   createUser(data: UserCreateInput!): User!
+  createPrice(data: PriceCreateInput!): Price!
   updatePost(data: PostUpdateInput!, where: PostWhereUniqueInput!): Post
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updatePrice(data: PriceUpdateInput!, where: PriceWhereUniqueInput!): Price
   deletePost(where: PostWhereUniqueInput!): Post
   deleteUser(where: UserWhereUniqueInput!): User
+  deletePrice(where: PriceWhereUniqueInput!): Price
   upsertPost(where: PostWhereUniqueInput!, create: PostCreateInput!, update: PostUpdateInput!): Post!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  upsertPrice(where: PriceWhereUniqueInput!, create: PriceCreateInput!, update: PriceUpdateInput!): Price!
   updateManyPosts(data: PostUpdateInput!, where: PostWhereInput!): BatchPayload!
   updateManyUsers(data: UserUpdateInput!, where: UserWhereInput!): BatchPayload!
+  updateManyPrices(data: PriceUpdateInput!, where: PriceWhereInput!): BatchPayload!
   deleteManyPosts(where: PostWhereInput!): BatchPayload!
   deleteManyUsers(where: UserWhereInput!): BatchPayload!
+  deleteManyPrices(where: PriceWhereInput!): BatchPayload!
 }
 
 type Query {
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  prices(where: PriceWhereInput, orderBy: PriceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Price]!
   post(where: PostWhereUniqueInput!): Post
   user(where: UserWhereUniqueInput!): User
+  price(where: PriceWhereUniqueInput!): Price
   postsConnection(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PostConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
-  """
-  Fetches an object given its ID
-  """
-  node("""
-  The ID of an object
-  """
-  id: ID!): Node
+  pricesConnection(where: PriceWhereInput, orderBy: PriceOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PriceConnection!
+  node(id: ID!): Node
 }
 
 type Subscription {
   post(where: PostSubscriptionWhereInput): PostSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  price(where: PriceSubscriptionWhereInput): PriceSubscriptionPayload
 }
 `
 
@@ -891,15 +571,26 @@ export type UserOrderByInput =
   'createdAt_ASC' |
   'createdAt_DESC'
 
+export type PriceOrderByInput = 
+  'id_ASC' |
+  'id_DESC' |
+  'count_ASC' |
+  'count_DESC' |
+  'amount_ASC' |
+  'amount_DESC' |
+  'updatedAt_ASC' |
+  'updatedAt_DESC' |
+  'createdAt_ASC' |
+  'createdAt_DESC'
+
 export type MutationType = 
   'CREATED' |
   'UPDATED' |
   'DELETED'
 
-export interface UserCreateWithoutPostsInput {
-  email: String
-  password: String
-  name: String
+export interface UserCreateOneWithoutPostsInput {
+  create?: UserCreateWithoutPostsInput
+  connect?: UserWhereUniqueInput
 }
 
 export interface PostWhereInput {
@@ -1046,11 +737,10 @@ export interface PostUpdateManyWithoutAuthorInput {
   upsert?: PostUpsertWithoutAuthorInput[] | PostUpsertWithoutAuthorInput
 }
 
-export interface PostUpdateInput {
+export interface PostCreateWithoutAuthorInput {
   isPublished?: Boolean
-  title?: String
-  text?: String
-  author?: UserUpdateOneWithoutPostsInput
+  title: String
+  text: String
 }
 
 export interface UserUpdateInput {
@@ -1058,18 +748,6 @@ export interface UserUpdateInput {
   password?: String
   name?: String
   posts?: PostUpdateManyWithoutAuthorInput
-}
-
-export interface PostCreateWithoutAuthorInput {
-  isPublished?: Boolean
-  title: String
-  text: String
-}
-
-export interface UserUpsertWithoutPostsInput {
-  where: UserWhereUniqueInput
-  update: UserUpdateWithoutPostsDataInput
-  create: UserCreateWithoutPostsInput
 }
 
 export interface UserSubscriptionWhereInput {
@@ -1082,69 +760,10 @@ export interface UserSubscriptionWhereInput {
   node?: UserWhereInput
 }
 
-export interface UserUpdateWithoutPostsDataInput {
-  email?: String
-  password?: String
-  name?: String
-}
-
-export interface PostWhereUniqueInput {
-  id?: ID_Input
-}
-
-export interface PostCreateInput {
-  isPublished?: Boolean
-  title: String
-  text: String
-  author: UserCreateOneWithoutPostsInput
-}
-
-export interface PostUpsertWithoutAuthorInput {
-  where: PostWhereUniqueInput
-  update: PostUpdateWithoutAuthorDataInput
-  create: PostCreateWithoutAuthorInput
-}
-
-export interface PostUpdateWithoutAuthorInput {
-  where: PostWhereUniqueInput
-  data: PostUpdateWithoutAuthorDataInput
-}
-
-export interface UserUpdateOneWithoutPostsInput {
-  create?: UserCreateWithoutPostsInput
-  connect?: UserWhereUniqueInput
-  disconnect?: UserWhereUniqueInput
-  delete?: UserWhereUniqueInput
-  update?: UserUpdateWithoutPostsInput
-  upsert?: UserUpsertWithoutPostsInput
-}
-
-export interface UserCreateInput {
-  email: String
-  password: String
-  name: String
-  posts?: PostCreateManyWithoutAuthorInput
-}
-
-export interface UserUpdateWithoutPostsInput {
+export interface UserUpsertWithoutPostsInput {
   where: UserWhereUniqueInput
-  data: UserUpdateWithoutPostsDataInput
-}
-
-export interface UserCreateOneWithoutPostsInput {
-  create?: UserCreateWithoutPostsInput
-  connect?: UserWhereUniqueInput
-}
-
-export interface PostUpdateWithoutAuthorDataInput {
-  isPublished?: Boolean
-  title?: String
-  text?: String
-}
-
-export interface UserWhereUniqueInput {
-  id?: ID_Input
-  email?: String
+  update: UserUpdateWithoutPostsDataInput
+  create: UserCreateWithoutPostsInput
 }
 
 export interface PostSubscriptionWhereInput {
@@ -1157,29 +776,152 @@ export interface PostSubscriptionWhereInput {
   node?: PostWhereInput
 }
 
-/*
- * An object with an ID
-
- */
-export interface Node {
-  id: ID_Output
+export interface UserUpdateWithoutPostsDataInput {
+  email?: String
+  password?: String
+  name?: String
 }
 
-export interface UserPreviousValues {
-  id: ID_Output
+export interface PostWhereUniqueInput {
+  id?: ID_Input
+}
+
+export interface UserUpdateWithoutPostsInput {
+  where: UserWhereUniqueInput
+  data: UserUpdateWithoutPostsDataInput
+}
+
+export interface PriceWhereUniqueInput {
+  id?: ID_Input
+}
+
+export interface UserUpdateOneWithoutPostsInput {
+  create?: UserCreateWithoutPostsInput
+  connect?: UserWhereUniqueInput
+  disconnect?: UserWhereUniqueInput
+  delete?: UserWhereUniqueInput
+  update?: UserUpdateWithoutPostsInput
+  upsert?: UserUpsertWithoutPostsInput
+}
+
+export interface PostUpdateWithoutAuthorDataInput {
+  isPublished?: Boolean
+  title?: String
+  text?: String
+}
+
+export interface PostUpdateInput {
+  isPublished?: Boolean
+  title?: String
+  text?: String
+  author?: UserUpdateOneWithoutPostsInput
+}
+
+export interface PriceSubscriptionWhereInput {
+  AND?: PriceSubscriptionWhereInput[] | PriceSubscriptionWhereInput
+  OR?: PriceSubscriptionWhereInput[] | PriceSubscriptionWhereInput
+  mutation_in?: MutationType[] | MutationType
+  updatedFields_contains?: String
+  updatedFields_contains_every?: String[] | String
+  updatedFields_contains_some?: String[] | String
+  node?: PriceWhereInput
+}
+
+export interface UserCreateInput {
+  email: String
+  password: String
+  name: String
+  posts?: PostCreateManyWithoutAuthorInput
+}
+
+export interface UserCreateWithoutPostsInput {
   email: String
   password: String
   name: String
 }
 
-/*
- * A connection to a list of items.
+export interface PriceCreateInput {
+  count: Int
+  amount: Int
+}
 
- */
-export interface PostConnection {
-  pageInfo: PageInfo
-  edges: PostEdge[]
-  aggregate: AggregatePost
+export interface PostCreateInput {
+  isPublished?: Boolean
+  title: String
+  text: String
+  author: UserCreateOneWithoutPostsInput
+}
+
+export interface PriceWhereInput {
+  AND?: PriceWhereInput[] | PriceWhereInput
+  OR?: PriceWhereInput[] | PriceWhereInput
+  id?: ID_Input
+  id_not?: ID_Input
+  id_in?: ID_Input[] | ID_Input
+  id_not_in?: ID_Input[] | ID_Input
+  id_lt?: ID_Input
+  id_lte?: ID_Input
+  id_gt?: ID_Input
+  id_gte?: ID_Input
+  id_contains?: ID_Input
+  id_not_contains?: ID_Input
+  id_starts_with?: ID_Input
+  id_not_starts_with?: ID_Input
+  id_ends_with?: ID_Input
+  id_not_ends_with?: ID_Input
+  count?: Int
+  count_not?: Int
+  count_in?: Int[] | Int
+  count_not_in?: Int[] | Int
+  count_lt?: Int
+  count_lte?: Int
+  count_gt?: Int
+  count_gte?: Int
+  amount?: Int
+  amount_not?: Int
+  amount_in?: Int[] | Int
+  amount_not_in?: Int[] | Int
+  amount_lt?: Int
+  amount_lte?: Int
+  amount_gt?: Int
+  amount_gte?: Int
+}
+
+export interface PostUpdateWithoutAuthorInput {
+  where: PostWhereUniqueInput
+  data: PostUpdateWithoutAuthorDataInput
+}
+
+export interface PostUpsertWithoutAuthorInput {
+  where: PostWhereUniqueInput
+  update: PostUpdateWithoutAuthorDataInput
+  create: PostCreateWithoutAuthorInput
+}
+
+export interface UserWhereUniqueInput {
+  id?: ID_Input
+  email?: String
+}
+
+export interface PriceUpdateInput {
+  count?: Int
+  amount?: Int
+}
+
+export interface Node {
+  id: ID_Output
+}
+
+export interface PricePreviousValues {
+  id: ID_Output
+  count: Int
+  amount: Int
+}
+
+export interface Price extends Node {
+  id: ID_Output
+  count: Int
+  amount: Int
 }
 
 export interface Post extends Node {
@@ -1192,26 +934,52 @@ export interface Post extends Node {
   author: User
 }
 
-/*
- * Information about pagination in a connection.
-
- */
-export interface PageInfo {
-  hasNextPage: Boolean
-  hasPreviousPage: Boolean
-  startCursor?: String
-  endCursor?: String
-}
-
-export interface PostSubscriptionPayload {
-  mutation: MutationType
-  node?: Post
-  updatedFields?: String[]
-  previousValues?: PostPreviousValues
-}
-
 export interface BatchPayload {
   count: Long
+}
+
+export interface AggregatePrice {
+  count: Int
+}
+
+export interface PriceSubscriptionPayload {
+  mutation: MutationType
+  node?: Price
+  updatedFields?: String[]
+  previousValues?: PricePreviousValues
+}
+
+export interface UserSubscriptionPayload {
+  mutation: MutationType
+  node?: User
+  updatedFields?: String[]
+  previousValues?: UserPreviousValues
+}
+
+export interface PriceEdge {
+  node: Price
+  cursor: String
+}
+
+export interface PriceConnection {
+  pageInfo: PageInfo
+  edges: PriceEdge[]
+  aggregate: AggregatePrice
+}
+
+export interface AggregateUser {
+  count: Int
+}
+
+export interface UserConnection {
+  pageInfo: PageInfo
+  edges: UserEdge[]
+  aggregate: AggregateUser
+}
+
+export interface PostEdge {
+  node: Post
+  cursor: String
 }
 
 export interface PostPreviousValues {
@@ -1223,6 +991,20 @@ export interface PostPreviousValues {
   text: String
 }
 
+export interface PostSubscriptionPayload {
+  mutation: MutationType
+  node?: Post
+  updatedFields?: String[]
+  previousValues?: PostPreviousValues
+}
+
+export interface UserPreviousValues {
+  id: ID_Output
+  email: String
+  password: String
+  name: String
+}
+
 export interface User extends Node {
   id: ID_Output
   email: String
@@ -1231,48 +1013,29 @@ export interface User extends Node {
   posts?: Post[]
 }
 
-export interface AggregateUser {
-  count: Int
-}
-
-export interface UserSubscriptionPayload {
-  mutation: MutationType
-  node?: User
-  updatedFields?: String[]
-  previousValues?: UserPreviousValues
-}
-
-/*
- * An edge in a connection.
-
- */
-export interface UserEdge {
-  node: User
-  cursor: String
-}
-
-/*
- * An edge in a connection.
-
- */
-export interface PostEdge {
-  node: Post
-  cursor: String
+export interface PageInfo {
+  hasNextPage: Boolean
+  hasPreviousPage: Boolean
+  startCursor?: String
+  endCursor?: String
 }
 
 export interface AggregatePost {
   count: Int
 }
 
-/*
- * A connection to a list of items.
-
- */
-export interface UserConnection {
-  pageInfo: PageInfo
-  edges: UserEdge[]
-  aggregate: AggregateUser
+export interface UserEdge {
+  node: User
+  cursor: String
 }
+
+export interface PostConnection {
+  pageInfo: PageInfo
+  edges: PostEdge[]
+  aggregate: AggregatePost
+}
+
+export type Long = string
 
 /*
 The `Int` scalar type represents non-fractional signed whole numeric values. Int can represent values between -(2^31) and 2^31 - 1. 
@@ -1286,22 +1049,16 @@ export type ID_Input = string | number
 export type ID_Output = string
 
 /*
-The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
-*/
-export type String = string
-
-/*
-The 'Long' scalar type represents non-fractional signed whole numeric values.
-Long can represent values between -(2^63) and 2^63 - 1.
-*/
-export type Long = string
-
-/*
 The `Boolean` scalar type represents `true` or `false`.
 */
 export type Boolean = boolean
 
 export type DateTime = string
+
+/*
+The `String` scalar type represents textual data, represented as UTF-8 character sequences. The String type is most often used by GraphQL to represent free-form human-readable text.
+*/
+export type String = string
 
 export interface Schema {
   query: Query
@@ -1312,31 +1069,41 @@ export interface Schema {
 export type Query = {
   posts: (args: { where?: PostWhereInput, orderBy?: PostOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<Post[]>
   users: (args: { where?: UserWhereInput, orderBy?: UserOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<User[]>
+  prices: (args: { where?: PriceWhereInput, orderBy?: PriceOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<Price[]>
   post: (args: { where: PostWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Post | null>
   user: (args: { where: UserWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<User | null>
+  price: (args: { where: PriceWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Price | null>
   postsConnection: (args: { where?: PostWhereInput, orderBy?: PostOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<PostConnection>
   usersConnection: (args: { where?: UserWhereInput, orderBy?: UserOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<UserConnection>
+  pricesConnection: (args: { where?: PriceWhereInput, orderBy?: PriceOrderByInput, skip?: Int, after?: String, before?: String, first?: Int, last?: Int }, info?: GraphQLResolveInfo | string) => Promise<PriceConnection>
   node: (args: { id: ID_Output }, info?: GraphQLResolveInfo | string) => Promise<Node | null>
 }
 
 export type Mutation = {
   createPost: (args: { data: PostCreateInput }, info?: GraphQLResolveInfo | string) => Promise<Post>
   createUser: (args: { data: UserCreateInput }, info?: GraphQLResolveInfo | string) => Promise<User>
+  createPrice: (args: { data: PriceCreateInput }, info?: GraphQLResolveInfo | string) => Promise<Price>
   updatePost: (args: { data: PostUpdateInput, where: PostWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Post | null>
   updateUser: (args: { data: UserUpdateInput, where: UserWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<User | null>
+  updatePrice: (args: { data: PriceUpdateInput, where: PriceWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Price | null>
   deletePost: (args: { where: PostWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Post | null>
   deleteUser: (args: { where: UserWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<User | null>
+  deletePrice: (args: { where: PriceWhereUniqueInput }, info?: GraphQLResolveInfo | string) => Promise<Price | null>
   upsertPost: (args: { where: PostWhereUniqueInput, create: PostCreateInput, update: PostUpdateInput }, info?: GraphQLResolveInfo | string) => Promise<Post>
   upsertUser: (args: { where: UserWhereUniqueInput, create: UserCreateInput, update: UserUpdateInput }, info?: GraphQLResolveInfo | string) => Promise<User>
+  upsertPrice: (args: { where: PriceWhereUniqueInput, create: PriceCreateInput, update: PriceUpdateInput }, info?: GraphQLResolveInfo | string) => Promise<Price>
   updateManyPosts: (args: { data: PostUpdateInput, where: PostWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
   updateManyUsers: (args: { data: UserUpdateInput, where: UserWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
+  updateManyPrices: (args: { data: PriceUpdateInput, where: PriceWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
   deleteManyPosts: (args: { where: PostWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
   deleteManyUsers: (args: { where: UserWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
+  deleteManyPrices: (args: { where: PriceWhereInput }, info?: GraphQLResolveInfo | string) => Promise<BatchPayload>
 }
 
 export type Subscription = {
   post: (args: { where?: PostSubscriptionWhereInput }, infoOrQuery?: GraphQLResolveInfo | string) => Promise<AsyncIterator<PostSubscriptionPayload>>
   user: (args: { where?: UserSubscriptionWhereInput }, infoOrQuery?: GraphQLResolveInfo | string) => Promise<AsyncIterator<UserSubscriptionPayload>>
+  price: (args: { where?: PriceSubscriptionWhereInput }, infoOrQuery?: GraphQLResolveInfo | string) => Promise<AsyncIterator<PriceSubscriptionPayload>>
 }
 
 export class Prisma extends BasePrisma {
@@ -1347,36 +1114,47 @@ export class Prisma extends BasePrisma {
 
   exists = {
     Post: (where: PostWhereInput): Promise<boolean> => super.existsDelegate('query', 'posts', { where }, {}, '{ id }'),
-    User: (where: UserWhereInput): Promise<boolean> => super.existsDelegate('query', 'users', { where }, {}, '{ id }')
+    User: (where: UserWhereInput): Promise<boolean> => super.existsDelegate('query', 'users', { where }, {}, '{ id }'),
+    Price: (where: PriceWhereInput): Promise<boolean> => super.existsDelegate('query', 'prices', { where }, {}, '{ id }')
   }
 
   query: Query = {
     posts: (args, info): Promise<Post[]> => super.delegate('query', 'posts', args, {}, info),
     users: (args, info): Promise<User[]> => super.delegate('query', 'users', args, {}, info),
+    prices: (args, info): Promise<Price[]> => super.delegate('query', 'prices', args, {}, info),
     post: (args, info): Promise<Post | null> => super.delegate('query', 'post', args, {}, info),
     user: (args, info): Promise<User | null> => super.delegate('query', 'user', args, {}, info),
+    price: (args, info): Promise<Price | null> => super.delegate('query', 'price', args, {}, info),
     postsConnection: (args, info): Promise<PostConnection> => super.delegate('query', 'postsConnection', args, {}, info),
     usersConnection: (args, info): Promise<UserConnection> => super.delegate('query', 'usersConnection', args, {}, info),
+    pricesConnection: (args, info): Promise<PriceConnection> => super.delegate('query', 'pricesConnection', args, {}, info),
     node: (args, info): Promise<Node | null> => super.delegate('query', 'node', args, {}, info)
   }
 
   mutation: Mutation = {
     createPost: (args, info): Promise<Post> => super.delegate('mutation', 'createPost', args, {}, info),
     createUser: (args, info): Promise<User> => super.delegate('mutation', 'createUser', args, {}, info),
+    createPrice: (args, info): Promise<Price> => super.delegate('mutation', 'createPrice', args, {}, info),
     updatePost: (args, info): Promise<Post | null> => super.delegate('mutation', 'updatePost', args, {}, info),
     updateUser: (args, info): Promise<User | null> => super.delegate('mutation', 'updateUser', args, {}, info),
+    updatePrice: (args, info): Promise<Price | null> => super.delegate('mutation', 'updatePrice', args, {}, info),
     deletePost: (args, info): Promise<Post | null> => super.delegate('mutation', 'deletePost', args, {}, info),
     deleteUser: (args, info): Promise<User | null> => super.delegate('mutation', 'deleteUser', args, {}, info),
+    deletePrice: (args, info): Promise<Price | null> => super.delegate('mutation', 'deletePrice', args, {}, info),
     upsertPost: (args, info): Promise<Post> => super.delegate('mutation', 'upsertPost', args, {}, info),
     upsertUser: (args, info): Promise<User> => super.delegate('mutation', 'upsertUser', args, {}, info),
+    upsertPrice: (args, info): Promise<Price> => super.delegate('mutation', 'upsertPrice', args, {}, info),
     updateManyPosts: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'updateManyPosts', args, {}, info),
     updateManyUsers: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'updateManyUsers', args, {}, info),
+    updateManyPrices: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'updateManyPrices', args, {}, info),
     deleteManyPosts: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'deleteManyPosts', args, {}, info),
-    deleteManyUsers: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'deleteManyUsers', args, {}, info)
+    deleteManyUsers: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'deleteManyUsers', args, {}, info),
+    deleteManyPrices: (args, info): Promise<BatchPayload> => super.delegate('mutation', 'deleteManyPrices', args, {}, info)
   }
 
   subscription: Subscription = {
     post: (args, infoOrQuery): Promise<AsyncIterator<PostSubscriptionPayload>> => super.delegateSubscription('post', args, {}, infoOrQuery),
-    user: (args, infoOrQuery): Promise<AsyncIterator<UserSubscriptionPayload>> => super.delegateSubscription('user', args, {}, infoOrQuery)
+    user: (args, infoOrQuery): Promise<AsyncIterator<UserSubscriptionPayload>> => super.delegateSubscription('user', args, {}, infoOrQuery),
+    price: (args, infoOrQuery): Promise<AsyncIterator<PriceSubscriptionPayload>> => super.delegateSubscription('price', args, {}, infoOrQuery)
   }
 }

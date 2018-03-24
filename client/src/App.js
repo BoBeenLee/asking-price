@@ -1,24 +1,51 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { ApolloProvider } from "react-apollo";
+import _ from 'lodash';
+import { Button } from 'antd';
+import { Query } from "react-apollo";
+import gql from "graphql-tag";
 import styled from 'react-emotion';
 
-const Root = styled.div`
+
+const Root = styled('div') `
   text-align: center;
 `;
 
 class App extends Component {
+
+  _renderRates = (data) => {
+    if (_.isEmpty(data)) {
+      return <div />;
+    }
+    return data.rates.map(({ currency, rate }) => (
+      <div key={currency}>
+        <p>{`${currency}: ${rate}`}</p>
+      </div>
+    ));
+  }
   render() {
     return (
-      <Root className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
+      <Query
+        query={gql`
+        {
+          rates(currency: "USD") {
+            currency
+            rate
+          }
+        }
+      `}>
+        {({ loading, error, data }) => {
+          return (<Root className="App">
+            <header className="App-header">
+              hello
         </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
-      </Root>
-    );
+            <p className="App-intro">
+              <Button>Hello World</Button>
+            </p>
+            {this._renderRates(data)}
+          </Root>);
+        }}
+      </Query>);
   }
 }
 

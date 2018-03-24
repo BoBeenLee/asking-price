@@ -15,3 +15,9 @@ type User {
   name: String!
   posts: [Post!]!
 }
+
+type Price {
+  id: ID! @unique
+  count: Int!
+  amount: Int!
+}

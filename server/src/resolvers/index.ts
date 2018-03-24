@@ -1,13 +1,19 @@
+import { Context } from '../utils'
 import { Query } from './Query'
-import { auth } from './Mutation/auth'
 import { post } from './Mutation/post'
-import { AuthPayload } from './AuthPayload'
+import { price } from './Mutation/price'
 
 export default {
+  Subscription: {
+    price: {
+      subscribe: async (parent, args, ctx: Context, info) => {
+        return ctx.db.subscription.price({}, info);
+      }
+    }
+  },
   Query,
   Mutation: {
-    ...auth,
     ...post,
-  },
-  AuthPayload,
+    ...price
+  }
 }

@@ -2,6 +2,10 @@
 
 ## Getting Started
 
+contract 체결
+selling 매도
+buying 매수
+
 Start by not writing any code.
 
 ```
