@@ -16,6 +16,13 @@
                 "sourceMap": true,
                 "autoLabel": true
             }
+        ],
+        [
+            "import",
+            {
+                "libraryName": "antd",
+                "style": "css"
+            }
         ]
     ]
 }
