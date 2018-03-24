@@ -18,6 +18,7 @@ type User {
 
 type Price {
   id: ID! @unique
+  type: String!
   count: Int!
   amount: Int!
 }

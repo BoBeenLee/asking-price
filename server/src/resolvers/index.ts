@@ -1,6 +1,5 @@
 import { Context } from '../utils'
 import { Query } from './Query'
-import { post } from './Mutation/post'
 import { price } from './Mutation/price'
 
 export default {
@@ -13,7 +12,6 @@ export default {
   },
   Query,
   Mutation: {
-    ...post,
     ...price
   }
 }

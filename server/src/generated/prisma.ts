@@ -14,6 +14,7 @@ type Post implements Node {
 
 type Price implements Node {
   id: ID!
+  type: String!
   count: Int!
   amount: Int!
 }
@@ -243,6 +244,7 @@ type PriceConnection {
 }
 
 input PriceCreateInput {
+  type: String!
   count: Int!
   amount: Int!
 }
@@ -255,6 +257,8 @@ type PriceEdge {
 enum PriceOrderByInput {
   id_ASC
   id_DESC
+  type_ASC
+  type_DESC
   count_ASC
   count_DESC
   amount_ASC
@@ -267,6 +271,7 @@ enum PriceOrderByInput {
 
 type PricePreviousValues {
   id: ID!
+  type: String!
   count: Int!
   amount: Int!
 }
@@ -289,6 +294,7 @@ input PriceSubscriptionWhereInput {
 }
 
 input PriceUpdateInput {
+  type: String
   count: Int
   amount: Int
 }
@@ -310,6 +316,20 @@ input PriceWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  type: String
+  type_not: String
+  type_in: [String!]
+  type_not_in: [String!]
+  type_lt: String
+  type_lte: String
+  type_gt: String
+  type_gte: String
+  type_contains: String
+  type_not_contains: String
+  type_starts_with: String
+  type_not_starts_with: String
+  type_ends_with: String
+  type_not_ends_with: String
   count: Int
   count_not: Int
   count_in: [Int!]
@@ -574,6 +594,8 @@ export type UserOrderByInput =
 export type PriceOrderByInput = 
   'id_ASC' |
   'id_DESC' |
+  'type_ASC' |
+  'type_DESC' |
   'count_ASC' |
   'count_DESC' |
   'amount_ASC' |
@@ -841,6 +863,7 @@ export interface UserCreateWithoutPostsInput {
 }
 
 export interface PriceCreateInput {
+  type: String
   count: Int
   amount: Int
 }
@@ -869,6 +892,20 @@ export interface PriceWhereInput {
   id_not_starts_with?: ID_Input
   id_ends_with?: ID_Input
   id_not_ends_with?: ID_Input
+  type?: String
+  type_not?: String
+  type_in?: String[] | String
+  type_not_in?: String[] | String
+  type_lt?: String
+  type_lte?: String
+  type_gt?: String
+  type_gte?: String
+  type_contains?: String
+  type_not_contains?: String
+  type_starts_with?: String
+  type_not_starts_with?: String
+  type_ends_with?: String
+  type_not_ends_with?: String
   count?: Int
   count_not?: Int
   count_in?: Int[] | Int
@@ -904,6 +941,7 @@ export interface UserWhereUniqueInput {
 }
 
 export interface PriceUpdateInput {
+  type?: String
   count?: Int
   amount?: Int
 }
@@ -914,12 +952,14 @@ export interface Node {
 
 export interface PricePreviousValues {
   id: ID_Output
+  type: String
   count: Int
   amount: Int
 }
 
 export interface Price extends Node {
   id: ID_Output
+  type: String
   count: Int
   amount: Int
 }

@@ -1,0 +1,21 @@
+{
+    "presets": [
+        "react",
+        [
+            "env",
+            {
+                "useBuiltIns": true,
+                "modules": false
+            }
+        ]
+    ],
+    "plugins": [
+        [
+            "emotion",
+            {
+                "sourceMap": true,
+                "autoLabel": true
+            }
+        ]
+    ]
+}

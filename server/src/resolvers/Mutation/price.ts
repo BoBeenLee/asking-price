@@ -53,7 +53,7 @@ export const price = {
             await P.delay(1000);
             const price = await ctx.db.mutation.createPrice(
                 {
-                    data: _.pick(data, ['count', 'amount'])
+                    data: _.pick(data, ['type', 'count', 'amount'])
                 },
                 null);
             console.log(price);
