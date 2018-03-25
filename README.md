@@ -38,33 +38,34 @@ The possibilities are endless.
 
 ### Demo
 [Server](https://asking-price.now.sh/)
-[Client]()
+[Client](https://asking-price-view.now.sh/)
 
-### Building the Application
-Client
+### Run the Application
+#### Local
++ Client
 ```
-npm run build
+npm install
+npm start
 ```
-Prisma
++ [Prisma](https://www.prismagraphql.com/docs/quickstart/)
 ```
-npm run build
+npm install
+npm start
 ```
 
 ### Deploying
-
-While you still have not done anything it's time to deploy your application. By running the following command you can deploy your application absolutely nowhere.
-
+#### [Zeit](https://zeit.co/)
++ Client
+```
+now && now alias
 ```
 
++ [Prisma](https://www.prismagraphql.com/docs/quickstart/)
 ```
-
-It's that simple. And when it comes time to scale the application, all you have to do is:
-
+npm install -g prisma
+prisma deploy
+now && now alias
 ```
-
-```
-
-I know right?
 
 ## Contributing
 BoBeenLee 2018.
