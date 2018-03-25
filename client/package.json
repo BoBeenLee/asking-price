@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "asking-price-view",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -21,16 +21,19 @@
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
     "react-apollo": "^2.1.0",
+    "react-app-rewired": "^1.5.0",
     "react-dom": "^16.2.0",
     "react-emotion": "^9.0.2",
     "react-scripts": "1.1.1",
     "recompose": "^0.26.0",
+    "serve": "^6.5.3",
     "subscriptions-transport-ws": "^0.9.7",
     "victory": "^0.25.6"
   },
   "scripts": {
     "start": "react-app-rewired start",
-    "build": "react-app-rewired build && bundlesize",
+    "now-start": "serve --single ./build",
+    "build": "react-app-rewired build",
     "test": "react-app-rewired test --env=jsdom",
     "eject": "react-scripts eject",
     "storybook": "start-storybook -p 9009 -s public",
@@ -56,7 +59,6 @@
     "bundlesize": "^0.16.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
-    "react-app-rewired": "^1.5.0",
     "react-test-renderer": "^16.2.0",
     "sinon": "^4.4.8"
   },
@@ -64,6 +66,14 @@
     "gitUsername": "GH Pages Bot",
     "gitEmail": "globaldev@naver.com",
     "commitMessage": "Deploy Storybook to GitHub Pages"
+  },
+  "now": {
+    "name": "asking-price-view",
+    "alias": "asking-price-view.now.sh",
+    "dotenv": true,
+    "env": {
+      "NODE_ENV": "production"
+    }
   },
   "jest": {
     "setupFiles": [

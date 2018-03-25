@@ -20,21 +20,30 @@ This is just an example application, but imagine it doing anything you want. Add
 
 The possibilities are endless.
 ## Storybook
-
-[Deploy to Storybook](https://github.com/storybooks/storybook-deployer)
+[Asking Price Storybook](https://bobinlee.github.io/asking-price/)
 
 ## Features
 + Frontend
+    + [Ant Design](https://ant.design/)
     + React
     + React Apollo
     + React Emotion
     + Jest
+    + Storybook
+    + [Victory](https://formidable.com/open-source/victory/)
 + Backend
     + Prisma
     + GraphQL
++ Websocket
 
+### Demo
+[Server](https://asking-price.now.sh/)
+[Client]()
 
 ### Building the Application
+Zeit
+
+now alias https://asking-price.now.sh my-web-app
 
 Client
 ```

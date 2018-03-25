@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "asking-price",
   "scripts": {
     "start": "dotenv -- nodemon -e ts,graphql -x ts-node src/index.ts",
     "dev": "npm-run-all --parallel start playground",
@@ -14,6 +14,11 @@
     "jsonwebtoken": "8.2.0",
     "lodash": "^4.17.5",
     "prisma-binding": "1.5.16"
+  },
+  "now": {
+    "name": "asking-price",
+    "alias": "asking-price.now.sh",
+    "dotenv": true
   },
   "devDependencies": {
     "@types/bcryptjs": "2.4.1",

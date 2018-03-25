@@ -28,11 +28,11 @@ const columns = [{
 const List = (props) => {
     const { selling, buying } = props;
 
-    const sellingSortByAmountDesc = _.orderBy(_.map(selling, _.identity), ['amount'], ['desc']);
-    const buyingSortByAmountDesc = _.orderBy(_.map(buying, _.identity), ['amount'], ['desc']);
+    const sellingSortByAmountDesc = _.orderBy(_.map(selling, item => ({ key: item.id, ...item })), ['amount'], ['desc']);
+    const buyingSortByAmountDesc = _.orderBy(_.map(buying, item => ({ key: item.id, ...item })), ['amount'], ['desc']);
 
     const dataSource = [...sellingSortByAmountDesc, ...buyingSortByAmountDesc];
-
+    // console.log(dataSource);
     return (
         <Root>
             <Table
