@@ -5,6 +5,13 @@ import { Button } from 'antd';
 
 
 class Chart extends Component {
+
+    state = {
+
+    }
+
+
+    
     render() {
         return (<div>Chart
             <Button>Hello</Button>

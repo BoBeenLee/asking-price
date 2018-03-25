@@ -7,6 +7,8 @@ import gql from "graphql-tag";
 import styled from 'react-emotion';
 import Header from './components/Header';
 import Footer from './components/Footer';
+import Chart from './components/Chart';
+import { withPriceState } from './hocs/price';
 
 const Root = styled('div') `
   text-align: center;
@@ -24,12 +26,8 @@ const PRICES_SUBSCRIPTION = gql`
     }
   }
 `;
-class App extends Component {
-  state = {
-    selling: {},
-    buying: {}
-  };
 
+class App extends Component {
   _renderRates = (data) => {
     if (_.isEmpty(data)) {
       return <div />;
@@ -41,6 +39,7 @@ class App extends Component {
     ));
   }
   render() {
+    const { addPrice, selling, buying } = this.props;
     return (
       <Root className="App">
         <header>
@@ -51,12 +50,11 @@ class App extends Component {
         >
           {({ data, loading }) => {
             if (data) {
+              addPrice(_.get(data, "price.node"));
               console.log(data.price.node);
             }
             return (
-              <div>
-                {/* {this._renderRates(data)} */}
-              </div>
+              <Chart selling={selling} buying={buying} />
             );
           }}
         </Subscription>
@@ -67,4 +65,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withPriceState(App);
