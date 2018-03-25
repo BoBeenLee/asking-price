@@ -7,13 +7,13 @@ const PRICE_MAP = {
     B: (price, state) => ({
         buying: {
             ...state['buying'],
-            [moment().valueOf()]: price
+            [moment(price.createdAt).valueOf()]: price
         },
     }),
     D: (price, state) => ({
         selling: {
             ...state['selling'],
-            [moment().valueOf()]: price
+            [moment(price.createdAt).valueOf()]: price
         }
     })
 };

@@ -21,4 +21,5 @@ type Price {
   type: String!
   count: Int!
   amount: Int!
+  createdAt: DateTime!
 }

@@ -14,7 +14,8 @@ describe("price", () => {
         addPrice({
             type: "D",
             amount: 100,
-            count: 1
+            count: 1,
+            createdAt: new Date()
         })
         const { selling } = component.lastCall.args[0];
         // console.log(_.keys(selling));
