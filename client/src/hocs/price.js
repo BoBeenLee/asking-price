@@ -1,5 +1,5 @@
 
-import { withStateHandlers } from 'recompose';
+import { withStateHandlers, lifecycle, compose } from 'recompose';
 import moment from 'moment';
 import _ from 'lodash';
 
@@ -7,21 +7,41 @@ const PRICE_MAP = {
     B: (price, state) => ({
         buying: {
             ...state['buying'],
-            [moment(price.createdAt).valueOf()]: price
+            [price.id]: price
         },
+        buyingSortByCreatedAt: [
+            _.pick(price, ['id', 'createdAt']),
+            ...state['buyingSortByCreatedAt']
+        ],
     }),
-    D: (price, state) => ({
+    S: (price, state) => ({
         selling: {
             ...state['selling'],
-            [moment(price.createdAt).valueOf()]: price
-        }
+            [price.id]: price
+        },
+        sellingSortByCreatedAt: [
+            _.pick(price, ['id', 'createdAt']),
+            ...state['sellingSortByCreatedAt']
+        ]
     })
 };
+
+const lifecyclePrice = lifecycle({
+    componentWillReceiveProps(nextProps) {
+        const { price, addPrice } = this.props;
+        const { price: nextPrice } = nextProps;
+        if (!price || (nextPrice && price.id !== nextPrice.id)) {
+            addPrice(nextPrice);
+        }
+    }
+})
 
 const withPriceState = withStateHandlers(
     () => ({
         selling: {},
-        buying: {}
+        sellingSortByCreatedAt: [],
+        buying: {},
+        buyingSortByCreatedAt: []
     }),
     {
         addPrice: (state) => (price) => {
@@ -38,7 +58,4 @@ const withPriceState = withStateHandlers(
     }
 );
 
-
-export {
-    withPriceState,
-};
+export default compose(withPriceState, lifecyclePrice);

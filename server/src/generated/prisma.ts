@@ -17,6 +17,7 @@ type Price implements Node {
   type: String!
   count: Int!
   amount: Int!
+  createdAt: DateTime!
 }
 
 type User implements Node {
@@ -263,10 +264,10 @@ enum PriceOrderByInput {
   count_DESC
   amount_ASC
   amount_DESC
-  updatedAt_ASC
-  updatedAt_DESC
   createdAt_ASC
   createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
 }
 
 type PricePreviousValues {
@@ -274,6 +275,7 @@ type PricePreviousValues {
   type: String!
   count: Int!
   amount: Int!
+  createdAt: DateTime!
 }
 
 type PriceSubscriptionPayload {
@@ -346,6 +348,14 @@ input PriceWhereInput {
   amount_lte: Int
   amount_gt: Int
   amount_gte: Int
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
 }
 
 input PriceWhereUniqueInput {
@@ -600,10 +610,10 @@ export type PriceOrderByInput =
   'count_DESC' |
   'amount_ASC' |
   'amount_DESC' |
-  'updatedAt_ASC' |
-  'updatedAt_DESC' |
   'createdAt_ASC' |
-  'createdAt_DESC'
+  'createdAt_DESC' |
+  'updatedAt_ASC' |
+  'updatedAt_DESC'
 
 export type MutationType = 
   'CREATED' |
@@ -922,6 +932,14 @@ export interface PriceWhereInput {
   amount_lte?: Int
   amount_gt?: Int
   amount_gte?: Int
+  createdAt?: DateTime
+  createdAt_not?: DateTime
+  createdAt_in?: DateTime[] | DateTime
+  createdAt_not_in?: DateTime[] | DateTime
+  createdAt_lt?: DateTime
+  createdAt_lte?: DateTime
+  createdAt_gt?: DateTime
+  createdAt_gte?: DateTime
 }
 
 export interface PostUpdateWithoutAuthorInput {
@@ -955,6 +973,7 @@ export interface PricePreviousValues {
   type: String
   count: Int
   amount: Int
+  createdAt: DateTime
 }
 
 export interface Price extends Node {
@@ -962,6 +981,7 @@ export interface Price extends Node {
   type: String
   count: Int
   amount: Int
+  createdAt: DateTime
 }
 
 export interface Post extends Node {

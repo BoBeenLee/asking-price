@@ -12,7 +12,8 @@ describe("price", () => {
 
         const { addPrice } = component.firstCall.args[0];
         addPrice({
-            type: "D",
+            id: 1,
+            type: "S",
             amount: 100,
             count: 1,
             createdAt: new Date()
@@ -21,13 +22,14 @@ describe("price", () => {
         // console.log(_.keys(selling));
         expect(_.keys(selling).length).toBe(1);
     });
-    it('should be empty price with priceState', () => {
+    it('should be empty price. do not match type', () => {
         const component = sinon.spy(() => null)
         const WithPriceState = withPriceState(component);
         const wrapper = mount(<WithPriceState />);
 
         const { addPrice } = component.firstCall.args[0];
         addPrice({
+            id: 1,
             type: "F",
             amount: 100,
             count: 1

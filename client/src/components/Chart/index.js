@@ -1,75 +1,89 @@
 import React, { Component } from "react";
 import styled from 'react-emotion';
 import PropTypes from 'prop-types';
-import { Button } from 'antd';
+import moment from 'moment';
 import _ from 'lodash';
-import { VictoryChart, VictoryAxis, VictoryTheme, VictoryStack, VictoryLine, VictoryGroup } from 'victory';
-
-import { withPriceState } from '../../hocs/price';
+import { VictoryChart, VictoryAxis, VictoryTheme, VictoryStack, VictoryArea, VictoryLine, VictoryGroup } from 'victory';
+import theme from '../../constants/theme';
+import withPriceState from '../../hocs/price';
 
 class Chart extends Component {
-    componentWillReceiveProps(nextProps) {
-        const { price, addPrice } = this.props;
-        const { price: nextPrice } = this.props;
-        if (nextPrice && price.id !== nextPrice.id) {
-            addPrice(nextPrice);
-        }
-    }
+    _transformChartData = (itemMap, items) => {
+        return _.map(items, item => {
+            const { createdAt, amount } = itemMap[item.id];
+            return {
+                ...itemMap[item.id],
+                x: new Date(createdAt),
+                y: amount
+            };
+        });
+    };
 
     /**
      * x : 시간, y : 금액
      */
     render() {
-        const { selling, buying } = this.props;
+        const { selling, sellingSortByCreatedAt, buying, buyingSortByCreatedAt } = this.props;
 
-        const s1 = [
-            { x: 1, y: 2 },
-            { x: 2, y: 3 },
-            { x: 3, y: 5 },
-            { x: 4, y: 4 },
-            { x: 5, y: 7 }
-        ];
-
-        const s2 = [
-            { x: 2, y: 2 },
-            { x: 3, y: 3 },
-            { x: 4, y: 5 },
-            { x: 5, y: 4 },
-            { x: 6, y: 7 }
-        ];
+        const axisStyles = {
+            axisLabel: { fontSize: 10, padding: 30 },
+            tickLabels: { fontSize: 6 }
+        };
 
         return (<VictoryChart
-            domainPadding={10}
+            height={250}
             theme={VictoryTheme.material}
         >
+            <VictoryAxis
+                label="Time"
+                scale="time"
+                standalone={false}
+                tickCount={4}
+                tickFormat={
+                    (x) => {
+                        return moment(x).format('mm:ss');
+                    }
+                }
+                style={axisStyles}
+            />
+            <VictoryAxis
+                dependentAxis
+                label="Amount"
+                scale="linear"
+                standalone={false}
+                tickFormat={
+                    (y) => {
+                        return y;
+                    }
+                }
+                style={axisStyles}
+            />
             <VictoryGroup
-                data={s1}
-                color="blue"
+                scale={{ x: "time", y: "linear" }}
+                standalone={false}
+                name="selling"
+                data={this._transformChartData(selling, sellingSortByCreatedAt)}
             >
                 <VictoryLine
+                    interpolation="natural"
                     style={{
-                        data: { stroke: "blue" },
+                        data: { stroke: theme.sellingColor },
                         parent: { border: "1px solid #ccc" }
                     }}
-                    data={s1}
                 />
             </VictoryGroup>
             <VictoryGroup
-                data={s2}
-                color="red"
+                scale={{ x: "time", y: "linear" }}
+                standalone={false}
+                name="buying"
+                data={this._transformChartData(buying, buyingSortByCreatedAt)}
             >
                 <VictoryLine
+                    interpolation="natural"
                     style={{
-                        data: { stroke: "#c43a31" },
+                        data: { stroke: theme.buyingColor },
                         parent: { border: "1px solid #ccc" }
                     }}
-                    data={[
-                        { x: 1, y: 2 },
-                        { x: 2, y: 3 },
-                        { x: 3, y: 5 },
-                        { x: 4, y: 4 },
-                        { x: 5, y: 7 }
-                    ]}
                 />
             </VictoryGroup>
         </VictoryChart>);
