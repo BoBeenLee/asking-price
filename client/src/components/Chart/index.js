@@ -7,6 +7,11 @@ import { VictoryChart, VictoryAxis, VictoryTheme, VictoryStack, VictoryArea, Vic
 import theme from '../../constants/theme';
 import withPriceState from '../../hocs/price';
 
+const axisStyles = {
+    axisLabel: { fontSize: 10, padding: 30 },
+    tickLabels: { fontSize: 6 }
+};
+
 class Chart extends Component {
     _transformChartData = (itemMap, items) => {
         return _.map(items, item => {
@@ -24,11 +29,6 @@ class Chart extends Component {
      */
     render() {
         const { selling, sellingSortByCreatedAt, buying, buyingSortByCreatedAt } = this.props;
-
-        const axisStyles = {
-            axisLabel: { fontSize: 10, padding: 30 },
-            tickLabels: { fontSize: 6 }
-        };
 
         return (<VictoryChart
             height={250}

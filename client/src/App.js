@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import _ from 'lodash';
 import styled from 'react-emotion';
+import { ThemeProvider } from 'emotion-theming';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import AskingPrice from './organizations/AskingPrice';
+import theme from './constants/theme';
 
 const Root = styled('div') `
   display: grid;
@@ -32,17 +34,20 @@ const FooterBox = styled('footer') `
 class App extends Component {
   render() {
     return (
-      <Root>
-        <HeaderBox>
-          <Header />
-        </HeaderBox>
-        <ContentBox>
-          <AskingPrice />
-        </ContentBox>
-        <FooterBox>
-          <Footer />
-        </FooterBox>
-      </Root>);
+      <ThemeProvider theme={theme}>
+        <Root>
+          <HeaderBox>
+            <Header />
+          </HeaderBox>
+          <ContentBox>
+            <AskingPrice />
+          </ContentBox>
+          <FooterBox>
+            <Footer />
+          </FooterBox>
+        </Root>
+      </ThemeProvider>
+    );
   }
 }
 
