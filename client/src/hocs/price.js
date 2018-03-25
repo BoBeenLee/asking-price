@@ -1,6 +1,22 @@
 
 import { withStateHandlers } from 'recompose';
 import moment from 'moment';
+import _ from 'lodash';
+
+const PRICE_MAP = {
+    B: (price, state) => ({
+        buying: {
+            ...state['buying'],
+            [moment().valueOf()]: price
+        },
+    }),
+    D: (price, state) => ({
+        selling: {
+            ...state['selling'],
+            [moment().valueOf()]: price
+        }
+    })
+};
 
 const withPriceState = withStateHandlers(
     () => ({
@@ -8,17 +24,13 @@ const withPriceState = withStateHandlers(
         buying: {}
     }),
     {
-        addPrice: ({ selling, buying }) => (price) => price.type === 'B' ? ({
-            buying: {
-                ...buying,
-                [moment().valueOf()]: price
-            },
-        }) : ({
-            selling: {
-                ...selling,
-                [moment().valueOf()]: price
+        addPrice: (state) => (price) => {
+            const typeFunc = PRICE_MAP[price.type];
+            if (!typeFunc) {
+                return state;
             }
-        }),
+            return typeFunc(price, state);
+        },
         reset: (_, { initialCounter = 0 }) => () => ({
             selling: {},
             buying: {}
