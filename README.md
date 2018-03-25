@@ -41,10 +41,6 @@ The possibilities are endless.
 [Client]()
 
 ### Building the Application
-Zeit
-
-now alias https://asking-price.now.sh my-web-app
-
 Client
 ```
 npm run build
