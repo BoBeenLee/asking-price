@@ -6,6 +6,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import AskingPrice from './organizations/AskingPrice';
 import theme from './constants/theme';
+import 'antd/dist/antd.css';
 
 const Root = styled('div') `
   display: grid;

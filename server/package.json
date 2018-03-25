@@ -18,7 +18,7 @@
   "now": {
     "name": "asking-price",
     "alias": "asking-price.now.sh",
-    "dotenv": true
+    "dotenv": ".env.production"
   },
   "devDependencies": {
     "@types/bcryptjs": "2.4.1",

@@ -70,7 +70,7 @@
   "now": {
     "name": "asking-price-view",
     "alias": "asking-price-view.now.sh",
-    "dotenv": true,
+    "dotenv": ".env.production",
     "env": {
       "NODE_ENV": "production"
     }
