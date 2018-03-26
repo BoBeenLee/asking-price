@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import styled from 'react-emotion';
 import { ThemeProvider } from 'emotion-theming';
+import { Query, Mutation, Subscription, graphql } from "react-apollo";
+import gql from "graphql-tag";
+
 import Header from './components/Header';
 import Footer from './components/Footer';
 import AskingPrice from './organizations/AskingPrice';
@@ -31,8 +34,34 @@ const FooterBox = styled('footer') `
   grid-area: footer;
 `;
 
+const MAKE_PRICES_MUTATION = gql`
+    mutation makePriceMutation{
+        makePrices {
+            isSuccess
+        }
+    }`;
+
+const PRICES_SUBSCRIPTION = gql`
+  subscription onPriceAdded {
+    price {
+      node {
+        id
+        type
+        count
+        amount
+        createdAt
+      }
+    }
+  }
+`;
 
 class App extends Component {
+
+  componentDidMount() {
+    // console.log(this.props.data);
+    // this.props.mutate({});
+  }
+
   render() {
     return (
       <ThemeProvider theme={theme}>
@@ -41,7 +70,13 @@ class App extends Component {
             <Header />
           </HeaderBox>
           <ContentBox>
-            <AskingPrice />
+            <Subscription
+              subscription={PRICES_SUBSCRIPTION}
+            >
+              {({ data, loading }) => {
+                return <AskingPrice price={_.get(data, 'price.node')} />;
+              }}
+            </Subscription>
           </ContentBox>
           <FooterBox>
             <Footer />
@@ -52,4 +87,8 @@ class App extends Component {
   }
 }
 
-export default App;
+export default graphql(MAKE_PRICES_MUTATION, {
+  options: {
+    ignoreResults: true
+  }
+})(App);

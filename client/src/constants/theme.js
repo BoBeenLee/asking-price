@@ -1,6 +1,6 @@
 const theme = {
-    sellingColor: '#c43a31',
-    buyingColor: '#153782',
+    sellingColor: '#153782',
+    buyingColor: '#c43a31',
     contractColor: '#6FC55E',
     backgroundColor: '#E8E8E8'
 };

@@ -2,16 +2,16 @@ import React from 'react';
 import { Table } from 'antd';
 import _ from 'lodash';
 import styled from 'react-emotion';
-import withPriceState from '../../hocs/price';
+import theme from '../../constants/theme';
 
 const Root = styled('div') `
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: top;
     padding-right: 30px;
 `;
 
-const columns = [{
+const LIST_COLUMNS = [{
     title: '타입',
     dataIndex: 'type',
     key: 'type',
@@ -25,6 +25,17 @@ const columns = [{
     key: 'amount',
 }];
 
+const TYPE_COLOR_MAP = {
+    B: {
+        color: '#eee',
+        backgroundColor: theme.buyingColor
+    },
+    S: {
+        color: '#eee',
+        backgroundColor: theme.sellingColor
+    }
+};
+
 const List = (props) => {
     const { selling, buying } = props;
 
@@ -37,9 +48,16 @@ const List = (props) => {
         <Root>
             <Table
                 pagination={false}
-                dataSource={dataSource} columns={columns} />
+                onRow={(record, index) => {
+                    return {
+                        style: {
+                            ...TYPE_COLOR_MAP[record.type]
+                        }
+                    };
+                }}
+                dataSource={dataSource} columns={LIST_COLUMNS} />
         </Root>
     );
 };
 
-export default withPriceState(List);
+export default List;
