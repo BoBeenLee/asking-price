@@ -1,24 +1,12 @@
 # Asking Price RealTime Application
-
 ## Getting Started
+실시간으로 들어오는 매수, 매도에 대해서 호가창을 보여주는 어플리케이션.
 
+### Naming
 contract 체결
 selling 매도
 buying 매수
 
-Start by not writing any code.
-
-```
-
-```
-
-This is just an example application, but imagine it doing anything you want. Adding new features is easy too:
-
-```
-
-```
-
-The possibilities are endless.
 ## Storybook
 [Asking Price Storybook](https://bobinlee.github.io/asking-price/)
 
@@ -37,8 +25,13 @@ The possibilities are endless.
 + Websocket
 
 ### Demo
-[Server](https://asking-price.now.sh/)
 [Client](https://asking-price-view.now.sh/)
+[Server](https://asking-price.now.sh/)
+
+1. Client화면 접속 시 예제에 대한 실시간 데이터 전송을 확인할 수 있다.
+2. Server Playground에서 Data와 같이 mutation하여 다른 데이터를 입력할 수 있다.
+    or 조회할 수 있다.
+
 
 ### Run the Application
 #### Local
@@ -75,7 +68,18 @@ mutation {
   }
 }
 ```
-
++ 조회
+```
+query {
+  prices {
+    id
+    type
+    count
+    amount
+    createdAt
+  }
+}
+```
 
 ### Deploying
 #### [Zeit](https://zeit.co/)
