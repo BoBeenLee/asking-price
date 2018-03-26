@@ -26,7 +26,7 @@ const plusPrice = (name, price, state) => ({
 const substractPrice = (name, price, state) => {
     return {
         [name]: _.reduce(state[name], (res, item) => {
-            if (item.id !== price.id) {
+            if (item.id !== price.originId) {
                 return { ...res, [item.id]: item };
             }
             if (item.count > price.count) {
@@ -50,10 +50,11 @@ const getContracts = (price) => (targetContracts) => {
             return res;
         }
         count -= contract.count;
-        const updateCount = count > 0 ? count : contract.count;
+        const updateCount = count > 0 ? contract.count : contract.count + count;
         return [...res, {
             ...contract,
             id: contract.id + updateCount,
+            originId: contract.id,
             count: updateCount
         }];
     }, []);
@@ -66,36 +67,33 @@ const getContracts = (price) => (targetContracts) => {
     };
 };
 
-const addContract = (name, price, state) => {
+const addContract = (name, price, state, orderBy) => {
     const { selling, buying, contract } = state;
     const targetContracts = getTargetContracts(selling, buying, price);
-    const targetContractsByAmount = _.orderBy(_.map(targetContracts, _.identity), ['amount'], ['asc']);
+    const targetContractsByAmount = _.orderBy(_.map(targetContracts, _.identity), ['amount'], [orderBy]);
+    const { nextPrice, contracts } = getContracts(price)(targetContractsByAmount);
 
     let localState = { ...state };
-    if (name === 'buying') {
-        const { nextPrice, contracts } = getContracts(price)(targetContractsByAmount);
-        localState = _.reduce(contracts, (res, contract) => {
-            return { ...res, ...priceTypeMap[contract.type].substractPrice(contract, res) };
-        }, localState);
-        localState = _.reduce(contracts, (res, contract) => ({ ...res, contract: { ...res.contract, [contract.id]: contract } }), localState);
-        if (nextPrice.count > 0) {
-            localState = { ...localState, ...plusPrice(name, nextPrice, state) };
-        }
+    localState = _.reduce(contracts, (res, contract) => {
+        return { ...res, ...priceTypeMap[contract.type].substractPrice(contract, res) };
+    }, localState);
+    localState = _.reduce(contracts, (res, contract) => ({ ...res, contract: { ...res.contract, [contract.id]: contract } }), localState);
+    if (nextPrice.count > 0) {
+        localState = { ...localState, ...plusPrice(name, nextPrice, state) };
     }
     return localState;
 };
-
 
 const priceTypeMap = {
     B: {
         plusPrice: _.partial(plusPrice, 'buying'),
         substractPrice: _.partial(substractPrice, 'buying'),
-        addContract: _.partial(addContract, 'buying')
+        addContract: _.partial(addContract, 'buying', _, _, 'asc')
     },
     S: {
         plusPrice: _.partial(plusPrice, 'selling'),
         substractPrice: _.partial(substractPrice, 'selling'),
-        addContract: _.partial(addContract, 'selling')
+        addContract: _.partial(addContract, 'selling', _, _, 'desc')
     }
 };
 

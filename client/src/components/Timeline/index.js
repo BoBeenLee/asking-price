@@ -14,7 +14,7 @@ const Timeline = ({ contract, ...rest }) => {
         <Root {...rest}>
             <AntdTimeline>
                 {_.map(contract, item => {
-                    return (<AntdTimeline.Item color={theme.contractColor}>
+                    return (<AntdTimeline.Item key={item.id} color={theme.contractColor}>
                         {`체결가: ${item.amount}, 갯수: ${item.count}`}
                     </AntdTimeline.Item>);
                 })}

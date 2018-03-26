@@ -11,13 +11,10 @@ import List from '../../components/List';
 import Timeline from '../../components/Timeline';
 
 const Root = styled('div') `
-   
-`;
-
-const Content = styled('div') `
     display: grid;
     grid-template-columns: 1fr 2fr 1fr;
     padding: 20px;
+    height: 100%;
 `;
 
 const PriceTitle = styled(Title) `
@@ -40,10 +37,8 @@ const lifecyclePrice = lifecycle({
         const { price: nextPrice } = nextProps;
 
         if (isDiffPrice(price, nextPrice) && isTargetContract(selling, buying, nextPrice)) {
-            console.log(this.props, nextPrice);
             addContract(nextPrice);
         } else if (isDiffPrice(price, nextPrice)) {
-            console.log(this.props, nextPrice);
             plusPrice(nextPrice);
         }
     }
@@ -63,18 +58,16 @@ class AskingPrice extends Component {
             contract, price } = this.props;
 
         return (<Root>
-            <Content>
-                <PriceTitle>호가창</PriceTitle>
-                <Contract>
-                    <ContractTitle>체결가</ContractTitle>
-                    <Timeline contract={contract} />
-                </Contract>
-                <Chart price={price} />
-                <List
-                    selling={selling}
-                    buying={buying}
-                />
-            </Content>
+            <PriceTitle>호가창</PriceTitle>
+            <Contract>
+                <ContractTitle>체결가</ContractTitle>
+                <Timeline contract={contract} />
+            </Contract>
+            <Chart price={price} />
+            <List
+                selling={selling}
+                buying={buying}
+            />
         </Root>);
     }
 }
