@@ -1,6 +1,7 @@
 
 import { withStateHandlers, lifecycle, setPropTypes, compose } from 'recompose';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 import _ from 'lodash';
 import { getTargetContracts, isTargetContract, isDiffPrice } from './priceHelper';
 
@@ -53,7 +54,7 @@ const getContracts = (price) => (targetContracts) => {
         const updateCount = count > 0 ? contract.count : contract.count + count;
         return [...res, {
             ...contract,
-            id: contract.id + updateCount,
+            id: contract.id + moment().valueOf(),
             originId: contract.id,
             count: updateCount
         }];
@@ -72,7 +73,6 @@ const addContract = (name, price, state, orderBy) => {
     const targetContracts = getTargetContracts(selling, buying, price);
     const targetContractsByAmount = _.orderBy(_.map(targetContracts, _.identity), ['amount'], [orderBy]);
     const { nextPrice, contracts } = getContracts(price)(targetContractsByAmount);
-
     let localState = { ...state };
     localState = _.reduce(contracts, (res, contract) => {
         return { ...res, ...priceTypeMap[contract.type].substractPrice(contract, res) };

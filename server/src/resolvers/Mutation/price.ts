@@ -1,4 +1,5 @@
-import { Context } from '../../utils'
+import { Context } from '../../utils';
+import { forwardTo } from 'prisma-binding';
 import * as P from 'bluebird';
 import * as _ from 'lodash';
 
@@ -48,6 +49,8 @@ const datas = [
 ];
 
 export const price = {
+    createPrice: forwardTo('db'),
+
     async makePrices(parent, args, ctx: Context, info) {
         await P.each(datas, async data => {
             await P.delay(1000);

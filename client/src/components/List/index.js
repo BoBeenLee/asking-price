@@ -55,6 +55,7 @@ const List = (props) => {
                         }
                     };
                 }}
+                scroll={{ x: '100%', y: 400 }}
                 dataSource={dataSource} columns={LIST_COLUMNS} />
         </Root>
     );

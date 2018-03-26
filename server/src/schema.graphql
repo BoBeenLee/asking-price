@@ -1,10 +1,11 @@
-# import Subscription.price, Post, Price, Mutation.createPrice from "./generated/prisma.graphql"
+# import Subscription.price, Post, Price, PriceCreateInput from "./generated/prisma.graphql"
 
 type Query {
-  feed: [Post!]!
+  prices: [Price!]!
 }
 
 type Mutation {
+  createPrice(data: PriceCreateInput!): Price!
   makePrices: Response!
 }
 

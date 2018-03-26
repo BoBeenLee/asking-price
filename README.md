@@ -53,6 +53,30 @@ npm install
 npm start
 ```
 
+### Data
++ Prsima Playground에서 해당 mutation을 실행하면 된다.
++ 초기 값 세팅
+```
+mutation {
+  makePrices {
+    isSuccess
+  }
+}
+```
++ 데이터 추가
+```
+mutation {
+  createPrice(data: {type: "S", count: 1000,  amount: 130}) {
+    id
+    type
+    amount
+    count
+    createdAt
+  }
+}
+```
+
+
 ### Deploying
 #### [Zeit](https://zeit.co/)
 + Client
