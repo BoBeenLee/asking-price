@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`title renders correctly 1`] = `
+<h1
+  className="css-xi606m e1p76gxu0"
+>
+  title
+</h1>
+`;

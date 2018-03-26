@@ -1,7 +1,7 @@
 import _ from 'lodash';
-export const getTargetContracts = (selling, buying, nextPrice) => {
-    if (_.some([selling, buying, nextPrice], _.isEmpty)) {
-        return;
+export const getTargetContracts = (selling = {}, buying = {}, nextPrice) => {
+    if (_.isEmpty(nextPrice)) {
+        return [];
     }
     if (nextPrice.type === 'B') {
         return _.filter(selling, item => item.amount <= nextPrice.amount);

@@ -2,7 +2,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
 import _ from 'lodash';
-import { withPriceState } from './price';
+import withPriceState from './price';
 
 describe("price", () => {
     it('should be not empty price with priceState', () => {
@@ -10,8 +10,8 @@ describe("price", () => {
         const WithPriceState = withPriceState(component);
         const wrapper = mount(<WithPriceState />);
 
-        const { addPrice } = component.firstCall.args[0];
-        addPrice({
+        const { plusPrice } = component.firstCall.args[0];
+        plusPrice({
             id: 1,
             type: "S",
             amount: 100,
@@ -27,8 +27,8 @@ describe("price", () => {
         const WithPriceState = withPriceState(component);
         const wrapper = mount(<WithPriceState />);
 
-        const { addPrice } = component.firstCall.args[0];
-        addPrice({
+        const { plusPrice } = component.firstCall.args[0];
+        plusPrice({
             id: 1,
             type: "F",
             amount: 100,

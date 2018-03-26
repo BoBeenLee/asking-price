@@ -2,12 +2,12 @@ import React from 'react';
 import { mount } from 'enzyme';
 import sinon from 'sinon';
 import _ from 'lodash';
-import { getTargetContracts, isDiffPrice } from './priceHelper';
+import { getTargetContracts, isDiffPrice, isTargetContract } from './priceHelper';
 
 describe("priceHelper", () => {
     it('should be not differ price', () => {
         const price = {};
-        const nextPrice = { id: 1 };
+        const nextPrice = {};
         expect(isDiffPrice(price, nextPrice)).toBe(false);
     });
 
@@ -31,22 +31,17 @@ describe("priceHelper", () => {
             count: 1,
             type: 'B'
         }
-        expect(getTargetContracts(selling, buying, nextPrice)).toBe(true);
+        expect(isTargetContract(selling, buying, nextPrice)).toBe(true);
     });
 
     it('should not be equal contract', () => {
-        expect(getTargetContracts({}, {}, {})).toBe(false);
-        const selling = {
-            amount: 170,
-            count: 1,
-            type: 'S'
-        };
+        expect(isTargetContract({}, {}, {})).toBe(false);
         const nextPrice = {
             amount: 160,
             count: 1,
             type: 'B'
         };
-        expect(getTargetContracts(selling, buying, nextPrice)).toBe(false);
+        expect(isTargetContract({}, {}, nextPrice)).toBe(false);
     });
 });
 

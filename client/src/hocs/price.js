@@ -50,9 +50,11 @@ const getContracts = (price) => (targetContracts) => {
             return res;
         }
         count -= contract.count;
+        const updateCount = count > 0 ? count : contract.count;
         return [...res, {
             ...contract,
-            count: contract.count - count > 0 ? count : contract.count
+            id: contract.id + updateCount,
+            count: updateCount
         }];
     }, []);
     return {
@@ -75,11 +77,10 @@ const addContract = (name, price, state) => {
         localState = _.reduce(contracts, (res, contract) => {
             return { ...res, ...priceTypeMap[contract.type].substractPrice(contract, res) };
         }, localState);
+        localState = _.reduce(contracts, (res, contract) => ({ ...res, contract: { ...res.contract, [contract.id]: contract } }), localState);
         if (nextPrice.count > 0) {
             localState = { ...localState, ...plusPrice(name, nextPrice, state) };
         }
-    } else {
-
     }
     return localState;
 };
@@ -104,10 +105,10 @@ export const lifecyclePrice = lifecycle({
         const { price: nextPrice } = nextProps;
 
         if (isDiffPrice(price, nextPrice) && isTargetContract(selling, buying, nextPrice)) {
-            console.log(this.props, nextPrice);
+            // console.log(this.props, nextPrice);
             addContract(nextPrice);
         } else if (isDiffPrice(price, nextPrice)) {
-            console.log(this.props, nextPrice);
+            // console.log(this.props, nextPrice);
             plusPrice(nextPrice);
         }
     }
@@ -125,14 +126,14 @@ export const withPriceState = withStateHandlers(
     () => (initialState),
     {
         plusPrice: (state) => (price) => {
-            const typeFunc = priceTypeMap[price.type].plusPrice;
+            const typeFunc = _.get(priceTypeMap[price.type], 'plusPrice');
             if (!typeFunc) {
                 return state;
             }
             return typeFunc(price, state);
         },
         addContract: (state) => (price) => {
-            const typeFunc = priceTypeMap[price.type].addContract;
+            const typeFunc = _.get(priceTypeMap[price.type], 'addContract');
             if (!typeFunc) {
                 return state;
             }

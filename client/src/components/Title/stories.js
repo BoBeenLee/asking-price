@@ -5,5 +5,5 @@ import Title from "./";
 
 storiesOf("Title", module)
     .add("with Title", () => (
-        <Title />
+        <Title>Title</Title>
     ));
