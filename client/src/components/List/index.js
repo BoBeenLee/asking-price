@@ -36,11 +36,13 @@ const TYPE_COLOR_MAP = {
     }
 };
 
+const sortByAmountDesc = (collection) => _.orderBy(_.map(collection, item => ({ key: item.id, ...item })), ['amount'], ['desc']);
+
 const List = (props) => {
     const { selling, buying } = props;
 
-    const sellingSortByAmountDesc = _.orderBy(_.map(selling, item => ({ key: item.id, ...item })), ['amount'], ['desc']);
-    const buyingSortByAmountDesc = _.orderBy(_.map(buying, item => ({ key: item.id, ...item })), ['amount'], ['desc']);
+    const sellingSortByAmountDesc = sortByAmountDesc(selling);
+    const buyingSortByAmountDesc = sortByAmountDesc(buying);
 
     const dataSource = [...sellingSortByAmountDesc, ...buyingSortByAmountDesc];
     // console.log(dataSource);
@@ -59,6 +61,10 @@ const List = (props) => {
                 dataSource={dataSource} columns={LIST_COLUMNS} />
         </Root>
     );
+};
+
+export {
+    sortByAmountDesc
 };
 
 export default List;
