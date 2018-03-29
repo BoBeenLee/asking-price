@@ -4,8 +4,8 @@
 실시간으로 들어오는 매수, 매도에 대해서 호가창을 보여주는 어플리케이션.
 
 ## Naming
-contract 체결
-selling 매도
+contract 체결<br/>
+selling 매도<br/>
 buying 매수
 
 ## Storybook
