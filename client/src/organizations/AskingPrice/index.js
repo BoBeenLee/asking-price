@@ -33,11 +33,11 @@ const Contract = styled('div') `
 
 const lifecyclePrice = lifecycle({
     componentWillReceiveProps(nextProps) {
-        const { selling, buying, price = {}, plusPrice, addContract } = this.props;
+        const { selling, buying, price = {}, plusPrice, addContracts } = this.props;
         const { price: nextPrice } = nextProps;
 
         if (isDiffPrice(price, nextPrice) && isTargetContract(selling, buying, nextPrice)) {
-            addContract(nextPrice);
+            addContracts(nextPrice);
         } else if (isDiffPrice(price, nextPrice)) {
             plusPrice(nextPrice);
         }

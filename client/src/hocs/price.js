@@ -44,7 +44,7 @@ const substractPrice = (name, price, state) => {
     }
 }
 
-const getContracts = (price) => (targetContracts) => {
+const makeContracts = (price) => (targetContracts) => {
     let count = price.count;
     const contracts = _.reduce(targetContracts, (res, contract) => {
         if (count <= 0) {
@@ -68,11 +68,11 @@ const getContracts = (price) => (targetContracts) => {
     };
 };
 
-const addContract = (name, price, state, orderBy) => {
+const addContracts = (name, price, state, orderBy) => {
     const { selling, buying, contract } = state;
     const targetContracts = getTargetContracts(selling, buying, price);
     const targetContractsByAmount = _.orderBy(_.map(targetContracts, _.identity), ['amount'], [orderBy]);
-    const { nextPrice, contracts } = getContracts(price)(targetContractsByAmount);
+    const { nextPrice, contracts } = makeContracts(price)(targetContractsByAmount);
     let localState = { ...state };
     localState = _.reduce(contracts, (res, contract) => {
         return { ...res, ...priceTypeMap[contract.type].substractPrice(contract, res) };
@@ -88,31 +88,16 @@ const priceTypeMap = {
     B: {
         plusPrice: _.partial(plusPrice, 'buying'),
         substractPrice: _.partial(substractPrice, 'buying'),
-        addContract: _.partial(addContract, 'buying', _, _, 'asc')
+        addContracts: _.partial(addContracts, 'buying', _, _, 'asc')
     },
     S: {
         plusPrice: _.partial(plusPrice, 'selling'),
         substractPrice: _.partial(substractPrice, 'selling'),
-        addContract: _.partial(addContract, 'selling', _, _, 'desc')
+        addContracts: _.partial(addContracts, 'selling', _, _, 'desc')
     }
 };
 
-export const lifecyclePrice = lifecycle({
-    componentWillReceiveProps(nextProps) {
-        const { selling, buying, price = {}, plusPrice, addContract } = this.props;
-        const { price: nextPrice } = nextProps;
-
-        if (isDiffPrice(price, nextPrice) && isTargetContract(selling, buying, nextPrice)) {
-            // console.log(this.props, nextPrice);
-            addContract(nextPrice);
-        } else if (isDiffPrice(price, nextPrice)) {
-            // console.log(this.props, nextPrice);
-            plusPrice(nextPrice);
-        }
-    }
-});
-
-export const setPropTypesPrice = setPropTypes({
+const setPropTypesPrice = setPropTypes({
     selling: PropTypes.object,
     sellingSortByCreatedAt: PropTypes.array,
     buying: PropTypes.object,
@@ -120,7 +105,7 @@ export const setPropTypesPrice = setPropTypes({
     contract: PropTypes.object
 });
 
-export const withPriceState = withStateHandlers(
+const withPriceState = withStateHandlers(
     () => (initialState),
     {
         plusPrice: (state) => (price) => {
@@ -130,8 +115,8 @@ export const withPriceState = withStateHandlers(
             }
             return typeFunc(price, state);
         },
-        addContract: (state) => (price) => {
-            const typeFunc = _.get(priceTypeMap[price.type], 'addContract');
+        addContracts: (state) => (price) => {
+            const typeFunc = _.get(priceTypeMap[price.type], 'addContracts');
             if (!typeFunc) {
                 return state;
             }
@@ -141,4 +126,12 @@ export const withPriceState = withStateHandlers(
     }
 );
 
+export {
+    initialState,
+    makeContracts,
+    addContracts,
+    substractPrice,
+    setPropTypesPrice,
+    withPriceState
+};
 export default compose(withPriceState, setPropTypesPrice);
